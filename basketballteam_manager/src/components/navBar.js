@@ -12,7 +12,10 @@ const Navbar = () => {
   };
 
   const handleFirstQuarter = () => {
-    navigate('/FirstQuarter',{state:{}})
+    navigate('/FirstQuarter')
+  };
+  const handlePlayersList = () => {
+    navigate('/PlayersList')
   };
   
   return (
@@ -21,6 +24,7 @@ const Navbar = () => {
             <Box sx={{ marginRight: '85px', justifyContent: 'center', flexGrow: 10, display: { xs: 'none', md: 'flex' } }}>
                 <Button onClick={handleComposeTeam} sx={{ my: 2, color: 'white', display: 'block' }}> Compose Team </Button>
                 <Button onClick={handleFirstQuarter} sx={{ my: 2, color: 'white', display: 'block' }}> First Quarter </Button>
+                <Button onClick={handlePlayersList} sx={{ my: 2, color: 'white', display: 'block' }}> Players List</Button>
             </Box>
            
       </AppBar>

@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
 import Navbar from './navBar'
-import Grid from '@mui/material/Grid';
 import '../App.css';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
-function Createcomposeteam({formDetails,setFormDetails}) {
+function Createcomposeteam({ formDetails, setFormDetails }) {
 
     // const [formDetails, setFormDetails] = useState({ FirstName: '', LastName: '', Height: '', Position: '' });
     const [errorMsg, setErrorMsg] = useState({ FirstName: '', LastName: '', Height: '', Position: '' });
@@ -69,6 +67,7 @@ function Createcomposeteam({formDetails,setFormDetails}) {
         setErrorMsg({ FirstName: '', LastName: '', Height: '', Position: '' })
     }
 
+
     function submit(e) {
 
         console.log("IN Submit Call")
@@ -94,96 +93,107 @@ function Createcomposeteam({formDetails,setFormDetails}) {
                 setErrorMsg({ ...errorMsg, Position: "*Required Position" })
             }
         } else {
-            console.log("form details", formDetails);
-            alert("Data Added Successfully")
-            // console.log(formDetails.FirstName, " = ", formDetails.LastName, " = ", formDetails.Height, " = ", formDetails.Position);
+            // console.log("form details", formDetails);
+            // alert("Data Added Successfully")
+
+            const postData = async (e) => {
+
+                const { FirstName, LastName, Height, Position } = formDetails;
+        
+                let res = await fetch("https://reactform-89994-default-rtdb.firebaseio.com/composeteamform.json", {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(
+                        { FirstName, LastName, Height, Position }),
+                });
+                console.log("res data==========", res.json());
+                if (res) {
+                    setFormDetails({ FirstName: '', LastName: '', Height: '', Position: '' });
+                    alert('data is saved successfully');
+                }
+            };
+            postData();
         }
     }
 
-    return (
+    return (<>
+        <Navbar />
         <div>
-            <Navbar />
-            <Container maxWidth="md" >
-                <form className='form'>
-                    <Grid container spacing={1}>
-                        <div style={{
-                            display: 'inline-flex',
-                            marginTop: '25px',
-                            paddingtop: '14px',
-                            width: 700,
-                            height: '400px',
-                            border: '1px solid #C7BEBC'
-                        }}>
-                            <Grid container item xs={8} style={{ display: 'grid', margin: '2px' }}>
-                                <div style={{display: 'block', margin: '15px'}}>
+            <form className='form' method='POST'>
+                <div style={{
+                    display: 'grid',
+                    margin: '10px',
+                    padding: '14px',
+                    width: 500,
+                    height: '400px',
+                    border: '1px solid #C7BEBC'
+                }}>
+                    <div >
+                        <TextField className='textBox'
+                            // error={!!errorMsg.FirstName}
+                            type="text"
+                            value={formDetails.FirstName}
+                            onChange={setNameHandler}
+                            variant="standard"
+                            label="First Name"
+                            size="small"
+                            required
+                        />
 
-                                <div >
-                                    <TextField className='textBox'
-                                        // error={!!errorMsg.FirstName}
-                                        type="text"
-                                        value={formDetails.FirstName}
-                                        onChange={setNameHandler}
-                                        variant="standard"
-                                        label="First Name"
-                                        size="small"
-                                        required
-                                    />
-
-                                    {errorMsg.FirstName && <span className="error" style={{ color: '#d32f2f' }}>{errorMsg.FirstName}</span>}
-                                </div>
-                                <div >
-                                    <TextField className='textBox'
-                                        // error={!!errorMsg.LastName}
-                                        type="text" value={formDetails.LastName} onChange={setLastNameHandler}
-                                        label="Last Name"
-                                        variant="standard"
-                                        size="small"
-                                        required
-                                    />
-                                    {errorMsg.LastName && <span className="error" style={{ color: '#d32f2f' }}>{errorMsg.LastName}</span>}
-                                </div>
-                                <div>
-                                    <TextField className='textBox'
-                                        // error={!!errorMsg.Height}
-                                        type="text" value={formDetails.Height} onChange={setHeightHandler}
-                                        label="Height"
-                                        variant="standard"
-                                        size="small"
-                                        required
-                                    />
-                                    {errorMsg.Height && <span className="error" style={{ color: '#d32f2f', padding: '10px' }}>{errorMsg.Height}</span>}
-                                </div>
-                                <div >
-                                    <FormControl variant="standard" sx={{minWidth: 120 }}>
-                                        <InputLabel id="demo-simple-select-standard-label">Position</InputLabel>
-                                        <Select
-                                            // labelId="demo-simple-select-standard-label"
-                                            // id="demo-simple-select-standard"
-                                            value={formDetails.Position}
-                                            onChange={setPositionHandler}
-                                            label="Position"
-                                            required
-                                        >
-                                            <MenuItem value="Point Guard(PG)">Point Guard(PG)</MenuItem>
-                                            <MenuItem value="Shooting Guard(SG)">Shooting Guard(SG)</MenuItem>
-                                            <MenuItem value="Small Forward(SF)">Small Forward(SF)</MenuItem>
-                                            <MenuItem value="Power Forward(PF)">Power Forward(PF)</MenuItem>
-                                            <MenuItem value="Center(C)">Center(C)</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                    {errorMsg.Position && <span className="error" style={{ color: '#d32f2f' }}>{errorMsg.Position}</span>}
-                                </div>
-                                </div>
-                                <div>
-                                    <Button sx={{ m: 2 }} variant="contained" size="medium" onClick={resetForm} >Reset</Button>
-                                    <Button sx={{ m: 2 }} variant="contained" size="medium" onClick={submit}  >Submit</Button>
-                                </div>
-                            </Grid>
-                        </div>
-                    </Grid>
-                </form>
-            </Container>
+                        {errorMsg.FirstName && <span className="error" style={{ color: '#d32f2f' }}>{errorMsg.FirstName}</span>}
+                    </div>
+                    <div >
+                        <TextField className='textBox'
+                            // error={!!errorMsg.LastName}
+                            type="text" value={formDetails.LastName} onChange={setLastNameHandler}
+                            label="Last Name"
+                            variant="standard"
+                            size="small"
+                            required
+                        />
+                        {errorMsg.LastName && <span className="error" style={{ color: '#d32f2f' }}>{errorMsg.LastName}</span>}
+                    </div>
+                    <div>
+                        <TextField className='textBox'
+                            // error={!!errorMsg.Height}
+                            type="text" value={formDetails.Height} onChange={setHeightHandler}
+                            label="Height"
+                            variant="standard"
+                            size="small"
+                            required
+                        />
+                        {errorMsg.Height && <span className="error" style={{ color: '#d32f2f', padding: '10px' }}>{errorMsg.Height}</span>}
+                    </div>
+                    <div >
+                        <FormControl variant="standard" sx={{ minWidth: 120 }}>
+                            <InputLabel id="demo-simple-select-standard-label">Position</InputLabel>
+                            <Select
+                                // labelId="demo-simple-select-standard-label"
+                                // id="demo-simple-select-standard"
+                                value={formDetails.Position}
+                                onChange={setPositionHandler}
+                                label="Position"
+                                required
+                            >
+                                <MenuItem value="Point Guard(PG)">Point Guard(PG)</MenuItem>
+                                <MenuItem value="Shooting Guard(SG)">Shooting Guard(SG)</MenuItem>
+                                <MenuItem value="Small Forward(SF)">Small Forward(SF)</MenuItem>
+                                <MenuItem value="Power Forward(PF)">Power Forward(PF)</MenuItem>
+                                <MenuItem value="Center(C)">Center(C)</MenuItem>
+                            </Select>
+                        </FormControl>
+                        {errorMsg.Position && <span className="error" style={{ color: '#d32f2f' }}>{errorMsg.Position}</span>}
+                    </div>
+                    <div>
+                        <Button sx={{ m: 2 }} variant="contained" size="medium" onClick={resetForm} >Reset</Button>
+                        <Button sx={{ m: 2 }} variant="contained" size="medium" onClick={submit}  >Submit</Button>
+                    </div>
+                </div>
+            </form>
         </div >
+    </>
     )
 }
 export default Createcomposeteam
