@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { dataRef } from '../firebase';
+import { dataRef ,database} from '../firebase';
 import Navbar from './navBar';
+import { Button } from '@mui/material';
 
 const Display = () => {
     const [data, setData] = useState([]);
@@ -14,8 +15,8 @@ const Display = () => {
                 ...value,
             }));
 
-            setData(dataArray);
             console.log("Final Data Array--->", dataArray)
+            setData(dataArray);
         });
 
         // Here we Clean up the listener when the component unmounts
@@ -24,6 +25,19 @@ const Display = () => {
         };
     }, []);
 
+
+
+    const deleteRecord = (recordKey) => {
+        const recordRef = database.ref('/composeteamform/' + recordKey);
+        recordRef.remove()
+          .then(() => {
+            console.log('Record deleted successfully',database);
+          })
+          .catch((error) => {
+            console.error('Error deleting record:', error);
+          });
+          console.log('!!!!!!!!',database);
+      };
     return (
         <>
             <Navbar />
@@ -40,20 +54,21 @@ const Display = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map(item => (
+                        {data.map((item, index) => (
                             <tr>
                                 <td key={item.FirstName}>{item.FirstName}</td>
                                 <td key={item.LastName}>{item.LastName}</td>
                                 <td key={item.Height}>{item.Height}</td>
                                 <td key={item.Position}>{item.Position}</td>
                                 <td>
-                                    <button>Edit</button>
-                                    <button>Delete</button>
+                                    <button id={index} onClick={() => deleteRecord(item.id)}>Delete</button>
+                                    <button id={index}>Edit</button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                <Button sx={{ m: 2 }} variant="contained" size="medium" >Back</Button>
             </div>
         </>
     )

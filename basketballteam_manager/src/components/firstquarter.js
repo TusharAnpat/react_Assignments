@@ -1,7 +1,7 @@
 import React from "react";
 // import { FormControl, InputLabel} from '@mui/material';
 import Navbar from "./navBar";
-import { Divider, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Button, Divider, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 const Firstquarter = ({ formDetails }) => {
     console.log("props===============", formDetails);
@@ -13,8 +13,8 @@ const Firstquarter = ({ formDetails }) => {
             <div style={{
                 display: 'inline-flex',
                 textAlign: "center",
-                margin: '25px',
-                padding: '14px',
+                margin: '20px',
+                padding: '10px',
                 width: 400,
                 height: '400px',
                 border: '1px solid #C7BEBC'
@@ -46,6 +46,9 @@ const Firstquarter = ({ formDetails }) => {
                     </FormControl>
                 </div>
             </div>
+                <div>
+                    <Button sx={{ m: 2 }} variant="contained" size="medium" >Back</Button>
+                </div>
         </>
     )
 }
