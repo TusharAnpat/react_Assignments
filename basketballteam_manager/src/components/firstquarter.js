@@ -2,11 +2,18 @@ import React from "react";
 // import { FormControl, InputLabel} from '@mui/material';
 import Navbar from "./navBar";
 import { Button, Divider, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Firstquarter = ({ formDetails }) => {
     console.log("props===============", formDetails);
     const { FirstName, LastName, Position, Height } = formDetails
 
+    
+    //Here we redirect to HomePage.
+    const navigate = useNavigate()
+    const onHomePage = () => {
+        navigate('/')
+    }
     return (
         <>
             <Navbar />
@@ -47,7 +54,7 @@ const Firstquarter = ({ formDetails }) => {
                 </div>
             </div>
                 <div>
-                    <Button sx={{ m: 2 }} variant="contained" size="medium" >Back</Button>
+                    <Button sx={{ m: 2 }} variant="contained" size="medium" onClick={onHomePage}>Back</Button>
                 </div>
         </>
     )

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { dataRef ,database} from '../firebase';
+import { dataRef, database } from '../firebase';
 import Navbar from './navBar';
-import { Button } from '@mui/material';
+import { Button, FormControl, Divider, MenuItem, Select } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const Display = () => {
     const [data, setData] = useState([]);
@@ -25,7 +26,11 @@ const Display = () => {
         };
     }, []);
 
-
+    //Here we redirect to HomePage.
+    const navigate = useNavigate()
+    const onHomePage = () => {
+        navigate('/')
+    }
 
     const deleteRecord = (recordKey) => {
         const recordRef = database.ref('/composeteamform/' + recordKey);
@@ -38,11 +43,47 @@ const Display = () => {
           });
           console.log('!!!!!!!!',database);
       };
+
+    const sortAscendingOrder = () => {
+        let finalarr = [...data].sort((a, b) => {
+            const nameA = a.FirstName.toLowerCase();
+            const nameB = b.FirstName.toLowerCase();
+            if (nameA < nameB) {
+                return -1;
+            }
+            if (nameA > nameB) {
+                return 1;
+            }
+            return 0;
+        }
+        )
+        console.log('sort data', finalarr)
+        setData(finalarr);
+    }
+
     return (
         <>
             <Navbar />
-            <div>
+            <div style={{
+                display: 'flex',
+                margin: '10px',
+                // padding: '14px',
+                width: '58%',
+                // border: '1px solid #C7BEBC',
+                placeitems: 'center',
+            }}>
                 <h1>Player Details</h1>
+                <FormControl sx={{ m: 1, margin: '14px', width: '200px' }}>
+                    <Select
+                        //   onChange={handleChange}
+                        inputProps={{ 'aria-label': 'Without label' }}
+                    >
+                        <MenuItem><em>None</em></MenuItem>
+                        <MenuItem value="sortAscendingOrder" onClick={sortAscendingOrder}>sortByFirstName</MenuItem>
+                    </Select>
+                </FormControl>
+            </div>
+            <div>
                 <table style={{ textalign: 'center', margin: '10px', padding: '14px', width: '60%', border: '1px solid #C7BEBC' }}>
                     <thead style={{ backgroundColor: "#1976d2", color: 'white' }}>
                         <tr>
@@ -68,7 +109,8 @@ const Display = () => {
                         ))}
                     </tbody>
                 </table>
-                <Button sx={{ m: 2 }} variant="contained" size="medium" >Back</Button>
+                <Divider></Divider>
+                <Button sx={{ m: 2 }} variant="contained" size="medium" onClick={onHomePage} >Back</Button>
             </div>
         </>
     )
