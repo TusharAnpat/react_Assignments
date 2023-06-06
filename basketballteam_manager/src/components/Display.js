@@ -1,11 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { dataRef, database } from '../firebase';
 import Navbar from './navBar';
-import { Button, FormControl, Divider, MenuItem, Select } from '@mui/material';
+import { Button, FormControl, Divider, MenuItem, Select, InputLabel } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const Display = () => {
     const [data, setData] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
+    const [recordIndex, setIndex] = useState()
+    const [user, setUser] = useState({ FirstName: '', LastName: '', Height: '', Position: '' });
+    let disabelPlaceHolder = false;
+
+    const handleEditClick = (index) => {
+        setIsEditing(true);
+        setIndex(index);
+    };
+
+    let id, value;
+    const setFieldsHandler = (e) => {
+        id = e.target.id;
+        value = e.target.value;
+        setUser({ ...user, [id]: value });
+        console.log('user', user);
+    }
+
     useEffect(() => {
         // Here Fetch real-time data and update state
         dataRef.on('value', (snapshot) => {
@@ -33,16 +51,39 @@ const Display = () => {
     }
 
     const deleteRecord = (recordKey) => {
+        alert('Are you Sure you want to delete record')
         const recordRef = database.ref('/composeteamform/' + recordKey);
         recordRef.remove()
-          .then(() => {
-            console.log('Record deleted successfully',database);
-          })
-          .catch((error) => {
-            console.error('Error deleting record:', error);
-          });
-          console.log('!!!!!!!!',database);
-      };
+            .then(() => {
+                console.log('Record deleted successfully', database);
+            })
+            .catch((error) => {
+                console.error('Error deleting record:', error);
+            });
+        console.log('!!!!!!!!', database);
+    };
+
+    const RemoveDuplicateRecord = () => {
+        let uniqueArray = Array.from(new Set(data.map(obj => obj.FirstName))).map(firstName => {
+            return data.find(obj => obj.FirstName === firstName);
+        });
+        console.log(uniqueArray);
+        setData(uniqueArray);
+    }
+
+    const SaveUpdatedRecord = (recordKey) => {
+        const recordRef = database.ref('/composeteamform/' + recordKey);
+        recordRef.update(user)
+            .then(() => {
+                console.log('Record updated successfully', database);
+                alert('Record Updated Successfully');
+                setIsEditing(false);
+            })
+            .catch((error) => {
+                console.error('Error to update record:', error);
+            });
+        console.log('!!!!!!!!', database);
+    }
 
     const sortAscendingOrder = () => {
         let finalarr = [...data].sort((a, b) => {
@@ -58,7 +99,7 @@ const Display = () => {
         }
         )
         console.log('sort data', finalarr)
-        setData(finalarr);
+        setData(...finalarr);
     }
 
     return (
@@ -67,18 +108,17 @@ const Display = () => {
             <div style={{
                 display: 'flex',
                 margin: '10px',
-                // padding: '14px',
                 width: '58%',
-                // border: '1px solid #C7BEBC',
                 placeitems: 'center',
             }}>
                 <h1>Player Details</h1>
                 <FormControl sx={{ m: 1, margin: '14px', width: '200px' }}>
+                    <InputLabel id="demo-simple-select-label">Filters</InputLabel>
                     <Select
-                        //   onChange={handleChange}
+                        label="Filters"
                         inputProps={{ 'aria-label': 'Without label' }}
                     >
-                        <MenuItem><em>None</em></MenuItem>
+                        <MenuItem value='RemoveDuplicateRecord' onClick={RemoveDuplicateRecord}>unique record</MenuItem>
                         <MenuItem value="sortAscendingOrder" onClick={sortAscendingOrder}>sortByFirstName</MenuItem>
                     </Select>
                 </FormControl>
@@ -91,26 +131,83 @@ const Display = () => {
                             <th>Last Name</th>
                             <th>Height</th>
                             <th>Position</th>
-                            <th></th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {data.map((item, index) => (
                             <tr>
-                                <td key={item.FirstName}>{item.FirstName}</td>
-                                <td key={item.LastName}>{item.LastName}</td>
-                                <td key={item.Height}>{item.Height}</td>
-                                <td key={item.Position}>{item.Position}</td>
+                                <td key={item.FirstName}>
+                                    {isEditing && index === recordIndex ? (
+                                        <input
+                                            type="text"
+                                            id='FirstName'
+                                            value={user.FirstName}
+                                            onChange={setFieldsHandler}
+                                            placeholder={`${disabelPlaceHolder ? " " : item.FirstName}`}
+                                        />
+                                    ) : (
+                                        item.FirstName
+                                    )}
+                                </td>
+                                <td key={item.LastName}>
+                                    {isEditing && index === recordIndex ? (
+                                        <input
+                                            type="text"
+                                            id='LastName'
+                                            value={user.LastName}
+                                            onChange={setFieldsHandler}
+                                            placeholder={`${disabelPlaceHolder ? " " : item.LastName}`}
+                                        />
+                                    ) : (
+                                        item.LastName
+                                    )}
+                                </td>
+                                <td key={item.Height}>
+
+                                    {isEditing && index === recordIndex ? (
+                                        <input
+                                            type='text'
+                                            id='Height'
+                                            value={user.Height}
+                                            onChange={setFieldsHandler}
+                                            placeholder={`${disabelPlaceHolder ? " " : item.Height}`}
+                                        />
+                                    ) : (
+                                        item.Height)}
+                                </td>
+                                <td key={item.Position}>
+                                    {isEditing && index === recordIndex ? (
+                                        <input
+                                            type='text'
+                                            id='Position'
+                                            value={user.Position}
+                                            onChange={setFieldsHandler}
+                                            placeholder={`${disabelPlaceHolder ? " " : item.Position}`}
+                                        />
+                                    ) : (
+                                        item.Position
+                                    )}
+                                </td>
                                 <td>
-                                    <button id={index} onClick={() => deleteRecord(item.id)}>Delete</button>
-                                    <button id={index}>Edit</button>
+                                    {isEditing && index === recordIndex ? (
+                                        <>
+                                            <button onClick={() => { SaveUpdatedRecord(item.id) }}>Save</button>
+                                            <button onClick={() => setIsEditing(false)}>Cancel</button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <button id={index} onClick={() => deleteRecord(item.id)}>Delete</button>
+                                            <button onClick={() => handleEditClick(index)}>Edit</button>
+                                        </>
+                                    )}
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-                <Divider></Divider>
                 <Button sx={{ m: 2 }} variant="contained" size="medium" onClick={onHomePage} >Back</Button>
+                <Divider></Divider>
             </div>
         </>
     )

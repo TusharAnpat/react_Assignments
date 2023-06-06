@@ -92,6 +92,7 @@ function Createcomposeteam({ formDetails, setFormDetails }) {
                 console.log("In IF block 5")
                 setErrorMsg({ ...errorMsg, Position: "*Required Position" })
             }
+            alert("Fields can't Empty")
         } else {
             // console.log("form details", formDetails);
             // alert("Data Added Successfully")
@@ -111,7 +112,7 @@ function Createcomposeteam({ formDetails, setFormDetails }) {
                 console.log("res data==========", res.json());
                 if (res) {
                     setFormDetails({ FirstName: '', LastName: '', Height: '', Position: '' });
-                    alert('data is saved successfully');
+                    alert('Data is saved successfully');
                 }
             };
             postData();
