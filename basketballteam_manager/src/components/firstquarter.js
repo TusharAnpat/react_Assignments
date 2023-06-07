@@ -3,12 +3,12 @@ import React from "react";
 import Navbar from "./navBar";
 import { Button, Divider, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import Footer from "./footer/Footer";
 
 const Firstquarter = ({ formDetails }) => {
     console.log("props===============", formDetails);
     const { FirstName, LastName, Position, Height } = formDetails
 
-    
     //Here we redirect to HomePage.
     const navigate = useNavigate()
     const onHomePage = () => {
@@ -53,9 +53,10 @@ const Firstquarter = ({ formDetails }) => {
                     </FormControl>
                 </div>
             </div>
-                <div>
-                    <Button sx={{ m: 2 }} variant="contained" size="medium" onClick={onHomePage}>Back</Button>
-                </div>
+            <div>
+                <Button sx={{ m: 2 }} variant="contained" size="medium" onClick={onHomePage}>Back</Button>
+            </div>
+            <Footer></Footer>
         </>
     )
 }

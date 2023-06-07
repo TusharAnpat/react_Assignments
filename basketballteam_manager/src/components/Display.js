@@ -3,6 +3,7 @@ import { dataRef, database } from '../firebase';
 import Navbar from './navBar';
 import { Button, FormControl, Divider, MenuItem, Select, InputLabel } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import Footer from './footer/Footer';
 
 const Display = () => {
     const [data, setData] = useState([]);
@@ -25,7 +26,7 @@ const Display = () => {
     }
 
     useEffect(() => {
-        // Here Fetch real-time data and update state
+        // Fetch real-time data and update state
         dataRef.on('value', (snapshot) => {
             const fetchedData = snapshot.val();
             console.log("Fetched data--->", fetchedData)
@@ -38,13 +39,13 @@ const Display = () => {
             setData(dataArray);
         });
 
-        // Here we Clean up the listener when the component unmounts
+        // Clean up the listener when the component unmounts
         return () => {
             dataRef.off('value');
         };
     }, []);
 
-    //Here we redirect to HomePage.
+    // redirect to HomePage.
     const navigate = useNavigate()
     const onHomePage = () => {
         navigate('/')
@@ -77,6 +78,7 @@ const Display = () => {
             .then(() => {
                 console.log('Record updated successfully', database);
                 alert('Record Updated Successfully');
+                setUser({ FirstName: '', LastName: '', Height: '', Position: '' });
                 setIsEditing(false);
             })
             .catch((error) => {
@@ -209,6 +211,7 @@ const Display = () => {
                 <Button sx={{ m: 2 }} variant="contained" size="medium" onClick={onHomePage} >Back</Button>
                 <Divider></Divider>
             </div>
+            <Footer></Footer>
         </>
     )
 }

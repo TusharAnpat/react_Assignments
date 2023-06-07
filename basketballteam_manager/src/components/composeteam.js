@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Navbar from './navBar'
 import '../App.css';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import Footer from './footer/Footer';
 
 function Createcomposeteam({ formDetails, setFormDetails }) {
 
@@ -119,7 +120,8 @@ function Createcomposeteam({ formDetails, setFormDetails }) {
         }
     }
 
-    return (<>
+    return (
+    <>
         <Navbar />
         <div>
             <form className='form' method='POST'>
@@ -194,6 +196,7 @@ function Createcomposeteam({ formDetails, setFormDetails }) {
                 </div>
             </form>
         </div >
+        <Footer></Footer>
     </>
     )
 }
