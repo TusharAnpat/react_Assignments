@@ -1,6 +1,6 @@
 import * as React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+// import CssBaseline from '@mui/material/CssBaseline';
+// import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -19,12 +19,9 @@ function Copyright() {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
 
 export default function Footer() {
   return (
-    <ThemeProvider theme={defaultTheme}>
       <Box
         sx={{
           display: 'flex',
@@ -35,7 +32,6 @@ export default function Footer() {
           width: '100%'
         }}
       >
-        <CssBaseline />
         <Box
           component="footer"
           sx={{
@@ -56,6 +52,5 @@ export default function Footer() {
           </Container>
         </Box>
       </Box>
-    </ThemeProvider>
   );
 }

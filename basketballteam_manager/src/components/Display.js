@@ -101,7 +101,7 @@ const Display = () => {
         }
         )
         console.log('sort data', finalarr)
-        setData(...finalarr);
+        setData([...finalarr]);
     }
 
     return (
