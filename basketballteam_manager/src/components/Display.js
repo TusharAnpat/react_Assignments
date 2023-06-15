@@ -5,8 +5,8 @@ import { Button, FormControl, Divider, MenuItem, Select, InputLabel } from '@mui
 import { useNavigate } from 'react-router-dom';
 import Footer from './footer/Footer';
 
-const Display = () => {
-    const [data, setData] = useState([]);
+const Display = (props) => {
+    const {data, setData} = props;
     const [isEditing, setIsEditing] = useState(false);
     const [recordIndex, setIndex] = useState()
     const [user, setUser] = useState({ FirstName: '', LastName: '', Height: '', Position: '' });
@@ -50,6 +50,10 @@ const Display = () => {
     const onHomePage = () => {
         navigate('/')
     }
+
+    const FormdataPdf = () => {
+        navigate('/FormDataPdf')
+      };
 
     const deleteRecord = (recordKey) => {
         alert('Are you Sure you want to delete record')
@@ -209,6 +213,7 @@ const Display = () => {
                     </tbody>
                 </table>
                 <Button sx={{ m: 2 }} variant="contained" size="medium" onClick={onHomePage} >Back</Button>
+                <Button sx={{ m: 2 }} variant="contained" size="medium" onClick={FormdataPdf}>PDf</Button>
                 <Divider></Divider>
             </div>
             <Footer></Footer>

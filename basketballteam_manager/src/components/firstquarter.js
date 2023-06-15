@@ -1,13 +1,12 @@
 import React from "react";
-// import { FormControl, InputLabel} from '@mui/material';
 import Navbar from "./navBar";
-import { Button, Divider, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Footer from "./footer/Footer";
 
 const Firstquarter = ({ formDetails }) => {
     console.log("props===============", formDetails);
-    const { FirstName, LastName, Position, Height } = formDetails
+    const { FirstName, LastName, Position } = formDetails
 
     //Here we redirect to HomePage.
     const navigate = useNavigate()
