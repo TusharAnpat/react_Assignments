@@ -4,9 +4,13 @@ import Navbar from './navBar';
 import { Button, FormControl, Divider, MenuItem, Select, InputLabel } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Footer from './footer/Footer';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const Display = (props) => {
-    const {data, setData} = props;
+    const { data, setData } = props;
     const [isEditing, setIsEditing] = useState(false);
     const [recordIndex, setIndex] = useState()
     const [user, setUser] = useState({ FirstName: '', LastName: '', Height: '', Position: '' });
@@ -195,16 +199,21 @@ const Display = (props) => {
                                         item.Position
                                     )}
                                 </td>
-                                <td>
+                                <td style={{ display: 'flex', margin: '5px',justifyContent: 'center',columnGap: '10px' }}>
                                     {isEditing && index === recordIndex ? (
                                         <>
-                                            <button onClick={() => { SaveUpdatedRecord(item.id) }}>Save</button>
-                                            <button onClick={() => setIsEditing(false)}>Cancel</button>
+                                        
+                                            {/* <button onClick={() => { SaveUpdatedRecord(item.id) }}>Save</button> */}
+                                            {/* <button onClick={() => setIsEditing(false)}>Cancel</button> */}
+                                            <SaveIcon onClick={() => { SaveUpdatedRecord(item.id) }}/>
+                                            <CancelIcon onClick={() => setIsEditing(false)} />
                                         </>
                                     ) : (
                                         <>
-                                            <button id={index} onClick={() => deleteRecord(item.id)}>Delete</button>
-                                            <button onClick={() => handleEditClick(index)}>Edit</button>
+                                            {/* <button id={index} onClick={() => deleteRecord(item.id)}>Delete</button> */}
+                                            {/* <button onClick={() => handleEditClick(index)}>Edit</button> */}
+                                            <DeleteOutlinedIcon id={index} onClick={() => deleteRecord(item.id)} />
+                                            <EditIcon onClick={() => handleEditClick(index)} />
                                         </>
                                     )}
                                 </td>

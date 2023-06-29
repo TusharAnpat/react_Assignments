@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
 
 function FormdataPdf(props) {
     const { formArray } = props;
-    console.log('pdf data', formArray);
     return (
         <PDFViewer style={{ width: '100%', height: '100vh' }}>
             <Document>
